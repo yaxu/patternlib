@@ -90,3 +90,5 @@ ENV/
 
 # local settings
 patternsite/config.py
+
+*~
