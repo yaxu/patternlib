@@ -21,5 +21,6 @@ urlpatterns = [
     url(r'^$', RedirectView.as_view(url='/pattern', permanent=False)),
     url(r'^pattern/', include('pattern.urls')),
     url(r'^admin/', admin.site.urls),
-    url('', include('social.apps.django_app.urls', namespace='social'))
+    url('', include('social.apps.django_app.urls', namespace='social')),
 ]
+

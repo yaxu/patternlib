@@ -1,7 +1,17 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
-#from .models import Event, Artist, Festival
+from .models import *
+from django.contrib.auth import logout as auth_logout
+from django.contrib.auth.decorators import login_required
 
 def index(request):
     context = {}
     return render(request, 'pattern/index.html', context)
+
+def add(request):
+    context = {}
+    return render(request, 'pattern/add.html', context)
+
+def logout(request):
+    auth_logout(request)
+    return redirect('/')

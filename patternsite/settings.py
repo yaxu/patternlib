@@ -132,11 +132,15 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 AUTHENTICATION_BACKENDS = (
     'social.backends.open_id.OpenIdAuth',
-    'social.backends.google.GoogleOpenId',
+    'social.backends.google.GoogleOpenId', 
     'social.backends.google.GoogleOAuth2',
     'social.backends.google.GoogleOAuth',
     'social.backends.twitter.TwitterOAuth',
-     'django.contrib.auth.backends.ModelBackend',
+    'social.backends.github.GithubOAuth2',
+    'django.contrib.auth.backends.ModelBackend',
 )
 
 SOCIAL_AUTH_ADMIN_USER_SEARCH_FIELDS = ['username', 'first_name', 'email']
+
+SOCIAL_AUTH_GITHUB_KEY = 'abde78d4319b5d8592f2'
+SOCIAL_AUTH_GITHUB_SECRET = '3ddd97d4dd15ad5c48813f36696e922e5c7bb752'
