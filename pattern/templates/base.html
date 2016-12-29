@@ -1,0 +1,44 @@
+<html>
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Mono" rel="stylesheet">
+    <style>
+      body {
+      font-family: 'Roboto Mono', monospace;
+      }
+      #headbox {
+      border: 1px solid black;
+      padding: 1em;
+      min-height: 3em;
+      }
+      #loginbox {
+      float:right;
+      }
+      h1 {
+      margin:0;
+      }
+      #mainbox {
+      border: 1px solid white;
+      padding: 1em;
+      min-height: 3em;
+      }
+    </style>
+  <body>
+    <div id="headbox">
+      <div id="loginbox">
+    {% if user and not user.is_anonymous %}
+      <a>{{ user.get_full_name }}</a>
+      <br>
+      <a href="/pattern/logout">Logout</a>
+      {% else %}
+      <table><tr><td valign="top">Login with: </td><td><a href="{% url 'social:begin' 'twitter' %}?next={{ request.path }}">Twitter</a><br />
+	    <a href="{% url 'social:begin' 'github' %}?next={{ request.path }}">Github</a><br />
+      </td></tr></table>
+      {% endif %}
+      </div>
+      <h1>patternlib</h1>
+    </div>
+    <div id="mainbox">
+      {% block content %}
+      {% endblock %}
+    </div>
+  </body>
+</html>
