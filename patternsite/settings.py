@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'pattern',
     'social.apps.django_app.default',
+    'django_q',
 ]
 
 MIDDLEWARE = [
@@ -144,3 +145,22 @@ SOCIAL_AUTH_ADMIN_USER_SEARCH_FIELDS = ['username', 'first_name', 'email']
 
 SOCIAL_AUTH_GITHUB_KEY = 'abde78d4319b5d8592f2'
 SOCIAL_AUTH_GITHUB_SECRET = '3ddd97d4dd15ad5c48813f36696e922e5c7bb752'
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
+    }
+}
+
+Q_CLUSTER = {
+    'name': 'DjangORM',
+    'workers': 4,
+    'timeout': 90,
+    'retry': 120,
+    'queue_limit': 50,
+    'bulk': 10,
+    'orm': 'default'
+}
+
+RUNPATTERN_BIN = "runhaskell /tmp/runpattern.hs"
+RUNPATTERN_DIR = "/tmp/"
