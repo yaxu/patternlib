@@ -12,7 +12,13 @@ https://docs.djangoproject.com/en/1.10/ref/settings/
 
 import os
 
-from patternsite.config import *
+
+try:
+    from patternsite.config import *
+except:
+    DBPASS = None
+    SECRET_KEY = 'hiya!!!123'
+
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -37,7 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'pattern',
-    'social.apps.django_app.default',
+    'social_django',
     'django_q',
 ]
 
@@ -133,7 +139,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 AUTHENTICATION_BACKENDS = (
     'social.backends.open_id.OpenIdAuth',
-    'social.backends.google.GoogleOpenId', 
+    'social.backends.google.GoogleOpenId',
     'social.backends.google.GoogleOAuth2',
     'social.backends.google.GoogleOAuth',
     'social.backends.twitter.TwitterOAuth',
@@ -164,3 +170,9 @@ Q_CLUSTER = {
 
 RUNPATTERN_BIN = "runhaskell /tmp/runpattern.hs"
 RUNPATTERN_DIR = "/tmp/"
+
+
+try:
+    from local_settings import *
+except:
+    pass
