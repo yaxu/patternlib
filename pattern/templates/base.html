@@ -1,26 +1,16 @@
+{% load static %}
 <html>
+  <head>
     <link href="https://fonts.googleapis.com/css?family=Roboto+Mono" rel="stylesheet">
-    <style>
-      body {
-      font-family: 'Roboto Mono', monospace;
-      }
-      #headbox {
-      border: 1px solid black;
-      padding: 1em;
-      min-height: 3em;
-      }
-      #loginbox {
-      float:right;
-      }
-      h1 {
-      margin:0;
-      }
-      #mainbox {
-      border: 1px solid white;
-      padding: 1em;
-      min-height: 3em;
-      }
-    </style>
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="{% static 'css/pattern.css' %}">
+
+    <script src="{% static 'js/jquery-3.1.1.min.js' %}"></script>
+
+    {% block head %}
+    {% endblock %}
+  </head>
   <body>
     <div id="headbox">
       <div id="loginbox">
@@ -36,9 +26,20 @@
       </div>
       <h1>patternlib</h1>
     </div>
-    <div id="mainbox">
-      {% block content %}
-      {% endblock %}
+    <div id="mainbox" class="container-fluid">
+      <div class="row">
+	<div class="col-sm-8 no-gutter">
+	  <div class="box">
+	    {% block content %}
+	    {% endblock %}
+	  </div>
+	</div>
+	<div class="col-sm-4 no-gutter">
+	  <div class="box side">
+	    two of two columns
+	  </div>
+	</div>
+      </div>
     </div>
   </body>
 </html>
