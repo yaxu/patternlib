@@ -33,8 +33,12 @@ class Comment(models.Model):
 
 
 def render_pattern(sender, instance, using, **kwargs):
+    models.signals.post_save.disconnect(render_pattern, sender=sender)
+
     url = run_render_and_upload(instance.code)
     instance.url = url
     instance.save()
 
-post_save.connect(render_pattern, sender=Pattern)
+    models.signals.post_save.connect(render_pattern, sender=sender)
+
+models.signals.post_save.connect(render_pattern, sender=Pattern)
