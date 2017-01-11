@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block head %}
+<script src="{% static 'codemirror-5.22.0/lib/codemirror.js' %}"></script>
+<link rel="stylesheet" href="{% static 'codemirror-5.22.0/lib/codemirror.css' %}">
+<script src="{% static 'codemirror-5.22.0/mode/haskell/haskell.js' %}"></script>
+<link rel="stylesheet" href="{% static 'css/edit.css' %}">
+
+<script>
+  var editor
+  
+  $( function() {
+    var editorOptions = {
+      lineNumbers: true,
+      mode: "text/x-haskell",
+      viewportMargin: Infinity
+    }
+    editor = CodeMirror.fromTextArea(document.getElementById("code"), editorOptions)
+    editor.setOption('readOnly', false)
+  // editor.setOption('theme', "solarized dark")
+  })
+</script>
+
+{% endblock %}
+
+{% block content %}
+<h2>Add pattern</h2>
+
+<div id="codebox">
+  <textarea id="code" name="code" cols="80"></textarea>
+</div>
+
+</body>
+</html>
+{% endblock %}
