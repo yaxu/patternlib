@@ -6,6 +6,8 @@
 <script src="{% static 'codemirror-5.22.0/mode/haskell/haskell.js' %}"></script>
 <link rel="stylesheet" href="{% static 'css/edit.css' %}">
 
+
+
 <script>
   var editor
   
@@ -25,6 +27,12 @@
 
 {% block content %}
 <h2>Add pattern</h2>
+
+
+<form method="POST" class="post-form">{% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="save btn btn-default">Add</button>
+</form>
 
 <div id="codebox">
   <textarea id="code" name="code" cols="80"></textarea>
