@@ -18,9 +18,9 @@
   var editor;
   var updateHistory = function() {
     var actions = editor.livewriting("returnactiondata")
-  console.log(JSON.stringify(actions))
-    $('textarea#id_history')[0].value = JSON.stringify(actions)
-    $('textarea#id_code')[0].value = editor.getValue()
+    $('#id_history')[0].value = JSON.stringify(actions)
+    $('#id_code')[0].value = editor.getValue()
+    window.alert(JSON.stringify(actions))
     return(false);
   }
 
