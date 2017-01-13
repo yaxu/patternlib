@@ -1,0 +1,3 @@
+[submodule "pattern/static/livewriting"]
+	path = pattern/static/livewriting
+	url = https://github.com/yaxu/livewriting

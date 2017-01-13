@@ -1,4 +1,12 @@
 {% extends 'base.html' %}
 {% block content %}
+<h2>Latest patterns</h2>
 
+<ul>
+{% for pattern in patterns %}
+<li><a href="{% url 'pattern_detail' pk=pattern.pk %}">{{ pattern.name }}</a></li>
+{% endfor %}
+</ul>
+
+<div><a href="{% url 'pattern_add' %}">add <span class="glyphicon glyphicon-plus"></span></a></div>
 {% endblock %}
