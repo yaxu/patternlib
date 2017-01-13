@@ -6,7 +6,7 @@ from subprocess import Popen, PIPE, STDOUT
 
 from django.conf import settings
 
-def render_and_upload(pattern):
+def render_and_upload(code):
     code = code.decode('unicode_escape').encode('ascii', 'ignore')
     response = ""
 
