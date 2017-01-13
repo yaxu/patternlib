@@ -8,7 +8,8 @@ from .forms import PatternForm
 import json
 
 def index(request):
-    context = {}
+    patterns = Pattern.objects.order_by('-id')[:16]
+    context = {'patterns': patterns}
     return render(request, 'pattern/index.html', context)
 
 def add(request):
