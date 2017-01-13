@@ -1,42 +1,53 @@
 {% extends 'base.html' %}
 {% load static %}
+
 {% block head %}
-<script src="{% static 'codemirror-5.22.0/lib/codemirror.js' %}"></script>
+
 <link rel="stylesheet" href="{% static 'codemirror-5.22.0/lib/codemirror.css' %}">
-<script src="{% static 'codemirror-5.22.0/mode/haskell/haskell.js' %}"></script>
 <link rel="stylesheet" href="{% static 'css/edit.css' %}">
-
-
-
-<script>
-  var editor
-  
-  $( function() {
-    var editorOptions = {
-      lineNumbers: true,
-      mode: "text/x-haskell",
-      viewportMargin: Infinity
-    }
-    editor = CodeMirror.fromTextArea(document.getElementById("code"), editorOptions)
-    editor.setOption('readOnly', false)
-  // editor.setOption('theme', "solarized dark")
-  })
-</script>
-
+<link rel="stylesheet" href="{% static 'livewriting/livewriting.css' %}">
+<script src="{% static 'codemirror-5.22.0/lib/codemirror.js' %}"></script>
+<script src="{% static 'livewriting/index.js' %}"></script>
+<script src="{% static 'js/livewriting-init.js' %}"></script>
 {% endblock %}
 
 {% block content %}
 <h2>Add pattern</h2>
 
+<script>
+  var editor;
+  var updateHistory = function() {
+    var actions = editor.livewriting("returnactiondata")
+  console.log(JSON.stringify(actions))
+    $('textarea#id_history')[0].value = JSON.stringify(actions)
+    $('textarea#id_code')[0].value = editor.getValue()
+    return(false);
+  }
 
-<form method="POST" class="post-form">{% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit" class="save btn btn-default">Add</button>
+  $(document).ready(function(){
+    place = $('div#livecode')[0]
+    editor = CodeMirror(place, {
+      value: "sound \"bd sn\"",
+      mode:  "text/x-haskell"
+    });
+    editor.livewriting = livewriting;
+    editor.livewriting("create", "codemirror",{}, "");
+    history = $('textarea#id_history')[0].value
+  if (history) {
+    console.log("play: " + history)
+      editor.livewriting("playJSON", history)
+    }
+  })
+  
+</script>
+
+<form method="POST" class="post-form" onSubmit="updateHistory()" novalidate>{% csrf_token %}
+  {{ form.media}}
+  {{ form.as_p }}
+  <div id="livecode">
+  </div>
+  <button type="submit" class="save btn btn-default">Add</button>
 </form>
-
-<div id="codebox">
-  <textarea id="code" name="code" cols="80"></textarea>
-</div>
 
 </body>
 </html>

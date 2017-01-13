@@ -11,7 +11,26 @@ def index(request):
     return render(request, 'pattern/index.html', context)
 
 def add(request):
-    context = {'form': PatternForm()}
+    if request.method == "POST":
+        form = PatternForm(request.POST)
+        pattern = form.save(commit=False)
+        username = request.user.username
+        language = Language.objects.get_or_create(
+            name = "TidalCycles"
+        );
+        pattern.language = language[0]
+        ident = Identity.objects.get_or_create(
+            user = request.user,
+            service = None,
+            defaults={'name': '',
+                      'ident': username
+            },
+        ),
+        pattern.author = ident[0][0]
+        pattern.save()
+    else:
+        form = PatternForm()
+    context = {'form': form}
     return render(request, 'pattern/add.html', context)
 
 def logout(request):
