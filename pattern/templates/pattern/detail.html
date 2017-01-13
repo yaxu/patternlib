@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block head %}
+<link rel="stylesheet" href="{% static 'codemirror-5.22.0/lib/codemirror.css' %}">
+<link rel="stylesheet" href="{% static 'css/edit.css' %}">
+<link rel="stylesheet" href="{% static 'css/jquery-ui.min.css' %}">
+<link rel="stylesheet" href="{% static 'livewriting/livewriting.css' %}">
+
+<script src="{% static 'js/jquery-ui.min.js' %}"></script>
+<script src="{% static 'codemirror-5.22.0/lib/codemirror.js' %}"></script>
+<script src="{% static 'livewriting/index.js' %}"></script>
+
+{% endblock %}
+
+{% block content %}
+<h2>Add pattern</h2>
+
+<script>
+  $(document).ready(function(){
+    var editor = CodeMirror.fromTextArea(document.getElementById('code'), {
+      mode: 'text/x-haskell'
+    });
+
+    editor.livewriting = livewriting;
+    editor.livewriting("create", "codemirror",{}, "");
+    editor.livewriting("playJson", {{ pattern.history|safe }});
+  });
+</script>
+    <textarea id="code" name="code">
+      
+    </textarea>
+</body>
+</html>
+{% endblock %}
+
+
+</head>
+<body>
+  <div style="width:80%; left:10%; position:absolute">
+    <textarea id=code name=code placeholder="type something here and submit to see the livewriting replay.">
+    </textarea>
+    <div>
+      <button id = "submit">Submit</button>
+    </div>
+  </div>
+
+  <script>
+    var delay;
+    // Initialize CodeMirror editor with a nice html5 canvas demo.
+    var editor = CodeMirror.fromTextArea(document.getElementById('code'), {
+      mode: 'text/html'
+    });
+
+    editor.livewriting = livewriting;
+    editor.livewriting("create", "codemirror",{}, "");
+    $("#submit").click(function(){
+      editor.livewriting("playJson", editor.livewriting("returnactiondata"));
+      $("#submit").hide();
+    });
+  </script>
+
+</body>
+</html>
