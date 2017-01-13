@@ -12,7 +12,13 @@ https://docs.djangoproject.com/en/1.10/ref/settings/
 
 import os
 
-from patternsite.config import *
+
+try:
+    from patternsite.config import *
+except:
+    DBPASS = None
+    SECRET_KEY = 'hiya!!!123'
+
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -37,7 +43,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'pattern',
-    'social.apps.django_app.default',
+    'social_django',
+    'django_q',
 ]
 
 MIDDLEWARE = [
@@ -132,7 +139,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 AUTHENTICATION_BACKENDS = (
     'social.backends.open_id.OpenIdAuth',
-    'social.backends.google.GoogleOpenId', 
+    'social.backends.google.GoogleOpenId',
     'social.backends.google.GoogleOAuth2',
     'social.backends.google.GoogleOAuth',
     'social.backends.twitter.TwitterOAuth',
@@ -144,3 +151,28 @@ SOCIAL_AUTH_ADMIN_USER_SEARCH_FIELDS = ['username', 'first_name', 'email']
 
 SOCIAL_AUTH_GITHUB_KEY = 'abde78d4319b5d8592f2'
 SOCIAL_AUTH_GITHUB_SECRET = '3ddd97d4dd15ad5c48813f36696e922e5c7bb752'
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
+    }
+}
+
+Q_CLUSTER = {
+    'name': 'DjangORM',
+    'workers': 4,
+    'timeout': 90,
+    'retry': 120,
+    'queue_limit': 50,
+    'bulk': 10,
+    'orm': 'default'
+}
+
+RUNPATTERN_BIN = "runhaskell /tmp/runpattern.hs"
+RUNPATTERN_DIR = "/tmp/"
+
+
+try:
+    from local_settings import *
+except:
+    pass
