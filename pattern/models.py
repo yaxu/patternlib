@@ -1,6 +1,6 @@
 from django.db import models
 from django.utils import timezone
-from tasks import run_render_and_upload
+from pattern.tasks import run_render_and_upload
 
 class Language(models.Model):
     name = models.CharField(max_length=200)
