@@ -2,7 +2,7 @@ from django_q.tasks import (
     async, result
 )
 from django_q.brokers import get_broker
-from runpattern import render_and_upload
+from pattern.runpattern import render_and_upload
 
 broker = get_broker()
 
