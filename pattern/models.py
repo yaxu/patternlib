@@ -13,7 +13,7 @@ class Service(models.Model):
     
 class Identity(models.Model):
     name = models.CharField(max_length=200)
-    #ident = models.CharField(max_length=200)
+    ident = models.CharField(max_length=200)
     user = models.ForeignKey('auth.User', null=True)
     # null if it's a local user
     service = models.ForeignKey('Service', null=True)

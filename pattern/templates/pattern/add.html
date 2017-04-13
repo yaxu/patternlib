@@ -18,6 +18,7 @@
   var editor;
   var updateHistory = function() {
     var actions = editor.livewriting("returnactiondata")
+    window.alert("updateHistory");
     $('#id_history')[0].value = JSON.stringify(actions)
     $('#id_code')[0].value = editor.getValue()
     window.alert(JSON.stringify(actions))
@@ -41,7 +42,7 @@
   
 </script>
 
-<form method="POST" class="post-form" onSubmit="updateHistory()" novalidate>{% csrf_token %}
+<form method="POST" class="post-form" onsubmit="updateHistory()" >{% csrf_token %}
   {{ form.media}}
   {{ form.as_p }}
   <div id="livecode">
