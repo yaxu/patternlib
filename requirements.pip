@@ -26,3 +26,4 @@ six==1.10.0
 social-auth-app-django==0.1.0
 social-auth-core==0.1.0
 wcwidth==0.1.7
+websocket-client==0.4.0
