@@ -170,8 +170,11 @@ Q_CLUSTER = {
     'orm': 'default'
 }
 
-RUNPATTERN_BIN = "runhaskell /tmp/runpattern.hs"
+RUNPATTERN_BIN = "/home/alex/patternlib/bin/runpattern"
 RUNPATTERN_DIR = "/tmp/"
+
+PATTERN_QUEUEDIR = "/home/alex/patternlib/patternqueue"
+PATTERN_AUDIODIR = "/home/alex/patternlib/pattern/static/audio"
 
 
 try:
