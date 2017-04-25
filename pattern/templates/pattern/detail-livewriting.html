@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block head %}
+<link rel="stylesheet" href="{% static 'codemirror-5.22.0/lib/codemirror.css' %}">
+<link rel="stylesheet" href="{% static 'css/edit.css' %}">
+<link rel="stylesheet" href="{% static 'css/jquery-ui.min.css' %}">
+<link rel="stylesheet" href="{% static 'livewriting/livewriting.css' %}">
+
+<script src="{% static 'js/jquery-ui.min.js' %}"></script>
+<script src="{% static 'codemirror-5.22.0/lib/codemirror.js' %}"></script>
+<script src="{% static 'livewriting/index.js' %}"></script>
+
+{% endblock %}
+
+{% block content %}
+<h2>Pattern: {{ pattern.name }}</h2>
+{{ pattern.is_live }} / 
+{{ pattern.status }}
+<a href="{% static pattern.audiourl %}">audio</a>
+
+<script>
+  $(document).ready(function(){
+    var editor = CodeMirror.fromTextArea(document.getElementById('code'), {
+      mode: 'text/x-haskell'
+    });
+    editor.setOption('readOnly', true);
+
+    $("#submit").click(function(){
+      editor.livewriting = livewriting;
+      editor.livewriting("create", "codemirror",{}, "");
+      editor.livewriting("playJson", {{ pattern.history|safe }});
+      $("#submit").hide();
+    });
+  });
+</script>
+    <textarea id="code" name="code">{{pattern.code}}</textarea>
+    <button id = "submit">Play</button>
+</body>
+</html>
+{% endblock %}

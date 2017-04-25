@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block head %}
+<link rel="stylesheet" href="/static/highlight/styles/default.css">
+<script src="/static/highlight/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+{% endblock %}
+
+{% block content %}
+Aha
+<ul>
+{% for pattern in patterns %}
+<li><a href="{% url 'pattern_detail' pk=pattern.pk %}">{{ pattern.name }}</a> {{ pattern.author.ident }}</li>
+{% endfor %}
+</ul>
+
+{% endblock %}
