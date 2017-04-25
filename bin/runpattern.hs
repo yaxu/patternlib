@@ -29,9 +29,10 @@ main = do a <- getArgs
           respond fn r
    where respond fn (OK p)
            = do (cps, nudger, getNow) <- cpsUtils'
-                (d,_) <- superDirtSetters getNow
-                -- system $ "ecasound -t:" ++ show (seconds+2) ++ " -i jack,dirt -o " ++ fn ++ " &"
-                system $ "ecasound -t:" ++ show (seconds+2) ++ " -i jack,SuperCollider -o " ++ fn ++ " &"
+                -- (d,_) <- superDirtSetters getNow
+                d <- dirtStream
+                system $ "ecasound -t:" ++ show (seconds+2) ++ " -i jack,dirt -o " ++ fn ++ " &"
+                -- system $ "ecasound -t:" ++ show (seconds+2) ++ " -i jack,SuperCollider -o " ++ fn ++ " &"
                 d p
                 threadDelay (seconds * 1000000)
                 exitSuccess
