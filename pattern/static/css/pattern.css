@@ -21,6 +21,17 @@ h2 {
     margin: 0 0 0.5em 0;
 }
 
+.patternblock h3 {
+    margin: 0 0 0 0;
+    padding: 0 0 0 0;
+    font-size: 1.1em;
+}
+
+code {
+    margin: 8px 0;
+    padding: 0;
+}
+
 #mainbox {
     border: 1px solid white;
     padding-top: 1em;

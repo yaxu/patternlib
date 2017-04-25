@@ -5,39 +5,28 @@
 
 <link rel="stylesheet" href="{% static 'codemirror-5.22.0/lib/codemirror.css' %}">
 <link rel="stylesheet" href="{% static 'css/edit.css' %}">
-<link rel="stylesheet" href="{% static 'livewriting/livewriting.css' %}">
 <script src="{% static 'codemirror-5.22.0/lib/codemirror.js' %}"></script>
-<script src="{% static 'livewriting/index.js' %}"></script>
-<script src="{% static 'js/livewriting-init.js' %}"></script>
 {% endblock %}
 
 {% block content %}
 <h2>Add pattern</h2>
 
 <script>
-  var editor;
+  var editor
+
   var updateHistory = function() {
-    var actions = editor.livewriting("returnactiondata")
-    window.alert("updateHistory");
-    $('#id_history')[0].value = JSON.stringify(actions)
+    window.alert("updateHistory")
+    $('#id_history')[0].value = "x"
     $('#id_code')[0].value = editor.getValue()
-    window.alert(JSON.stringify(actions))
-    return(false);
+    return(false)
   }
 
   $(document).ready(function(){
-    place = $('div#livecode')[0]
-    editor = CodeMirror(place, {
-      value: "sound \"bd sn\"",
+    ta = $('textarea#livecode')[0]
+    editor = CodeMirror.fromTextArea(ta, {
+      lineNumbers: true,
       mode:  "text/x-haskell"
-    });
-    editor.livewriting = livewriting;
-    editor.livewriting("create", "codemirror",{}, "");
-    history = $('textarea#id_history')[0].value
-  if (history) {
-    console.log("play: " + history)
-      editor.livewriting("playJSON", history)
-    }
+    })
   })
   
 </script>
@@ -45,8 +34,7 @@
 <form method="POST" class="post-form" onsubmit="updateHistory()" >{% csrf_token %}
   {{ form.media}}
   {{ form.as_p }}
-  <div id="livecode">
-  </div>
+  <textarea id="livecode">{{ parent.code }}</textarea>
   <button type="submit" class="save btn btn-default">Add</button>
 </form>
 

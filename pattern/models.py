@@ -21,11 +21,15 @@ class Identity(models.Model):
     user = models.ForeignKey('auth.User', null=True)
     # null if it's a local user
     service = models.ForeignKey('Service', null=True)
-    
+    def __str__(self):
+        return self.ident
+
 class Pattern(models.Model):
     name = models.CharField(max_length=200)
+    loves = models.ManyToManyField(Identity, related_name="pattern_loves")
     author = models.ForeignKey('Identity')
     language = models.ForeignKey('Language')
+    parent = models.ForeignKey('self', null=True)
     code = models.TextField()
     history = models.TextField(null=True)
     audiourl = models.URLField(blank=True, null=True)
@@ -43,6 +47,13 @@ class Pattern(models.Model):
     
     def __str__(self):
         return self.name
+
+    def lovePattern(self, user):
+        self.loves.add(user)
+
+    def unlovePattern(self, user):
+        print("unlove")
+        self.loves.remove(user)
 
     def typecheck(self):
         result = ws.sendrecv("/typecheck " + self.code)
@@ -66,11 +77,25 @@ class Pattern(models.Model):
         f.write(self.code)
         f.close()
         os.rename(filepath_tmp, filepath)
-        self.audiourl = (settings.PATTERN_AUDIOURL
-                         + settings.PATTERN_GENPATH(filename)
-                         + filename + ".mp3"
-                        )
+        self.audiourl = os.path.join(settings.PATTERN_AUDIOURL,
+                                     settings.PATTERN_GENPATH(filename)
+                                     + filename + ".mp3"
+                                    )
+        self.status = 'rendering'
 
+    def is_live(self):
+        result = False
+        if self.status == 'live':
+            result = True
+        elif self.status == 'rendering':
+            filepath = os.path.join(settings.PATTERN_AUDIODIR, self.audiourl)
+            print "test " + filepath
+            if os.path.isfile(filepath):
+                result = True
+                self.status = 'live'
+                self.save()
+        return result
+    
 class Comment(models.Model):
     pattern = models.ForeignKey('Pattern')
     author = models.ForeignKey('Identity')

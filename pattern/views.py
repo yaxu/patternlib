@@ -7,12 +7,33 @@ from .models import *
 from .forms import PatternForm
 import json
 
-def index(request):
-    patterns = Pattern.objects.order_by('-id')[:16]
+def pattern_index(request):
+    patterns = Pattern.objects.filter(status__in=['live','rendering']).order_by('-id')[:16]
     context = {'patterns': patterns}
     return render(request, 'pattern/index.html', context)
 
-def add(request):
+@login_required
+def pattern_love(request, pk):
+    if request.method == "POST":
+        i = Identity.objects.get(user=request.user)
+        pattern = get_object_or_404(Pattern, pk=pk)
+        pattern.lovePattern(i)
+    return redirect('pattern_detail', pk=pattern.pk)        
+
+@login_required
+def pattern_unlove(request, pk):
+    if request.method == "POST":
+        i = Identity.objects.get(user=request.user)
+        pattern = get_object_or_404(Pattern, pk=pk)
+        print("unlove")
+        pattern.unlovePattern(i)
+    return redirect('pattern_detail', pk=pattern.pk)        
+
+@login_required
+def pattern_add(request, parent_pk=None): 
+    if parent_pk:
+        parent = get_object_or_404(Pattern, pk=parent_pk, status='live')
+        
     if request.method == "POST":
         form = PatternForm(request.POST)
         if form.is_valid():
@@ -30,20 +51,34 @@ def add(request):
                 },
             ),
             pattern.author = ident[0][0]
+            pattern.parent = parent
             pattern.save()
-
+            
             if pattern.typecheck():
                 pattern.render()
-            pattern.save()
+                pattern.save()
+                
             return redirect('pattern_detail', pk=pattern.pk)
     else:
         form = PatternForm()
-    context = {'form': form}
+    context = {'form': form, 'parent': parent}
     return render(request, 'pattern/add.html', context)
 
 def pattern_detail(request, pk):
     pattern = get_object_or_404(Pattern, pk=pk)
-    return render(request, 'pattern/detail.html', {'pattern': pattern})
+    pattern.is_live() # fixes status if necessary
+    loves = False
+    if request.user.is_authenticated:
+        i = Identity.objects.get(user=request.user)
+        if i.pattern_loves.filter(id=pattern.id).exists():
+            loves = True
+    
+    return render(request, 'pattern/detail.html', {'pattern': pattern, 'loves': loves})
+
+def pattern_person(request, ident):
+    i = get_object_or_404(Identity, ident=ident)
+    patterns = Pattern.objects.filter(status='live', author=i)
+    return render(request, 'pattern/person.html', {'identity': i, 'patterns': patterns})
 
 def logout(request):
     auth_logout(request)

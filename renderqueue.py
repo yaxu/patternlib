@@ -26,7 +26,9 @@ def render(fnid, code):
     fn = fnid + ".mp3"
     tmpfn = fnid + "-rendering.mp3"
     path = settings.PATTERN_GENPATH(fnid)
-    fullpath = os.path.join(settings.PATTERN_AUDIODIR, path)
+    fullpath = os.path.join(settings.PATTERN_AUDIODIR,
+                            settings.PATTERN_AUDIOURL,
+                            path)
     
     try:
         print("making " + fullpath)

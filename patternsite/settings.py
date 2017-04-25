@@ -170,15 +170,15 @@ Q_CLUSTER = {
     'orm': 'default'
 }
 
-RUNPATTERN_BIN = "/home/alex/patternlib/bin/runpattern"
+RUNPATTERN_BIN = os.path.join(BASE_DIR, 'bin/runpattern')
 RUNPATTERN_DIR = "/tmp/"
 
-PATTERN_QUEUEDIR = "/home/alex/patternlib/patternqueue"
-PATTERN_QUEUEDIR_ERROR = "/home/alex/patternlib/patternqueue.error"
-PATTERN_QUEUEDIR_TMP = "/home/alex/patternlib/patternqueue/tmp"
-PATTERN_AUDIODIR = "/home/alex/patternlib/pattern/static/audio"
+PATTERN_QUEUEDIR = os.path.join(BASE_DIR, 'patternqueue')
+PATTERN_QUEUEDIR_ERROR = os.path.join(BASE_DIR, 'patternqueue.error')
+PATTERN_QUEUEDIR_TMP = os.path.join(BASE_DIR, 'patternqueue/tmp')
 PATTERN_GENPATH = lambda fnid: re.sub(r"(..)", r'\1/', fnid)
 PATTERN_AUDIOURL = "audio/"
+PATTERN_AUDIODIR = os.path.join(BASE_DIR, "pattern/static/")
 
 try:
     from local_settings import *
