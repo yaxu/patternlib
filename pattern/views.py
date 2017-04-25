@@ -30,7 +30,10 @@ def add(request):
                 },
             ),
             pattern.author = ident[0][0]
-            pattern.typecheck()
+            pattern.save()
+
+            if pattern.typecheck():
+                pattern.render()
             pattern.save()
             return redirect('pattern_detail', pk=pattern.pk)
     else:

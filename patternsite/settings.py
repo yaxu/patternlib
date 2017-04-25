@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/1.10/ref/settings/
 """
 
 import os
-
+import re
 
 try:
     from patternsite.config import *
@@ -174,8 +174,11 @@ RUNPATTERN_BIN = "/home/alex/patternlib/bin/runpattern"
 RUNPATTERN_DIR = "/tmp/"
 
 PATTERN_QUEUEDIR = "/home/alex/patternlib/patternqueue"
+PATTERN_QUEUEDIR_ERROR = "/home/alex/patternlib/patternqueue.error"
+PATTERN_QUEUEDIR_TMP = "/home/alex/patternlib/patternqueue/tmp"
 PATTERN_AUDIODIR = "/home/alex/patternlib/pattern/static/audio"
-
+PATTERN_GENPATH = lambda fnid: re.sub(r"(..)", r'\1/', fnid)
+PATTERN_AUDIOURL = "audio/"
 
 try:
     from local_settings import *
