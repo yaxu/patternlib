@@ -78,8 +78,8 @@ class Pattern(models.Model):
         f.close()
         os.rename(filepath_tmp, filepath)
         self.audiourl = os.path.join(settings.PATTERN_AUDIOURL,
-                                     settings.PATTERN_GENPATH(filename)
-                                     + filename + ".mp3"
+                                     settings.PATTERN_GENPATH(filename),
+                                     filename + ".mp3"
                                     )
         self.status = 'rendering'
 

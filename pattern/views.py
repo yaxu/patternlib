@@ -33,7 +33,9 @@ def pattern_unlove(request, pk):
 def pattern_add(request, parent_pk=None): 
     if parent_pk:
         parent = get_object_or_404(Pattern, pk=parent_pk, status='live')
-        
+    else:
+        parent = None
+ 
     if request.method == "POST":
         form = PatternForm(request.POST)
         if form.is_valid():

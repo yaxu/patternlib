@@ -30,7 +30,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['slab.org']
 
 
 # Application definition
@@ -151,8 +151,6 @@ AUTHENTICATION_BACKENDS = (
 SOCIAL_AUTH_ADMIN_USER_SEARCH_FIELDS = ['username', 'first_name', 'email']
 SOCIAL_AUTH_URL_NAMESPACE = 'social'
 
-SOCIAL_AUTH_GITHUB_KEY = 'abde78d4319b5d8592f2'
-SOCIAL_AUTH_GITHUB_SECRET = '3ddd97d4dd15ad5c48813f36696e922e5c7bb752'
 
 CACHES = {
     'default': {
@@ -170,7 +168,8 @@ Q_CLUSTER = {
     'orm': 'default'
 }
 
-RUNPATTERN_BIN = os.path.join(BASE_DIR, 'bin/runpattern')
+
+RUNPATTERN_BIN = os.path.join(BASE_DIR, 'bin/runpattern-tidalbot')
 RUNPATTERN_DIR = "/tmp/"
 
 PATTERN_QUEUEDIR = os.path.join(BASE_DIR, 'patternqueue')
