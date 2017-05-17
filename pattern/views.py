@@ -30,7 +30,7 @@ def pattern_unlove(request, pk):
     return redirect('pattern_detail', pk=pattern.pk)        
 
 @login_required
-def pattern_add(request, parent_pk=None): 
+def pattern_edit(request, parent_pk=None, pk=None): 
     if parent_pk:
         parent = get_object_or_404(Pattern, pk=parent_pk, status='live')
     else:
@@ -54,15 +54,19 @@ def pattern_add(request, parent_pk=None):
             ),
             pattern.author = ident[0][0]
             pattern.parent = parent
-            pattern.save()
             
             if pattern.typecheck():
                 pattern.render()
-                pattern.save()
+
+            pattern.save()
                 
             return redirect('pattern_detail', pk=pattern.pk)
     else:
-        form = PatternForm()
+        if pk:
+            pattern = get_object_or_404(Pattern, pk=pk)
+            form = PatternForm(instance=pattern)
+        else:
+            form = PatternForm()            
     context = {'form': form, 'parent': parent}
     return render(request, 'pattern/add.html', context)
 

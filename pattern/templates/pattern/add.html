@@ -6,6 +6,9 @@
 <link rel="stylesheet" href="{% static 'codemirror-5.22.0/lib/codemirror.css' %}">
 <link rel="stylesheet" href="{% static 'css/edit.css' %}">
 <script src="{% static 'codemirror-5.22.0/lib/codemirror.js' %}"></script>
+<script src="{% static 'webdirt/SampleBank.js' %}"></script>
+<script src="{% static 'webdirt/WebDirt.js' %}"></script>
+<script src="{% static 'webdirt/Graph.js' %}"></script>
 {% endblock %}
 
 {% block content %}
@@ -13,13 +16,125 @@
 
 <script>
   var editor
-
+  var ws
+  var wd
+  var wdready = 0
+  
   var updateHistory = function() {
-    window.alert("updateHistory")
+    // window.alert("updateHistory")
     $('#id_history')[0].value = "x"
     $('#id_code')[0].value = editor.getValue()
     return(false)
   }
+
+  var webPreview = function() {
+    hideError()
+    console.log("webPreview")
+    this.send("/renderJSON " + editor.getValue())
+    return(false)
+  }
+
+  this.waitForWebdirt = function (callback, interval) {
+    if (typeof wd  === 'undefined') {
+      initWebdirt()
+      // ws.onmessage = function (e) {console.log("msg: " + e.data)};
+    }
+    if (wdready === 1) {
+      callback();
+    }
+    else {
+      var that = this;
+      setTimeout(function () {
+        that.waitForWebdirt(callback, interval);
+      }, interval);
+    }
+  };
+  
+  var initWebdirt = function () {
+     if (typeof wd === "undefined") {
+       wd = new WebDirt("{% static 'webdirt/sampleMap.json' %}","{% static 'webdirt/samples' %}",null,function() {
+       console.log("webdirt ready")
+       wdready = 1
+      });
+     }
+    return(wd)
+  }
+
+  var playScore = function(score) {
+    waitForWebdirt(function () {
+      wd.playScore(score)
+    }, 500);  
+  }
+
+  var shareError = function(body) {
+    console.log("error " + body)
+    errorarea = $('pre#errorarea')
+    errorarea[0].innerText = body
+    errorarea.show()
+  }
+
+  var hideError = function() {
+    $('pre#errorarea').hide()
+  }
+  
+  var openWs = function() {
+    var ws = new WebSocket('ws://localhost:9162', []);
+    ws.onmessage = function (e) {
+        var re = /\/(\w+) ((.|[\r\n])*)/
+	var m = e.data.match(re);
+	var ok = false;
+	if (m) {
+	    var status = m[1];
+	    var data = m[2]
+	    var code = m[3];
+            if (status == 'renderJSON') {
+                var re2 = /(ok|nok) ((.|\n)*)/
+                var m2 = data.match(re2)
+                var ok = m2[1]
+                var body = m2[2]
+                if (ok === "ok") {
+                  var score = JSON.parse(body)
+                  console.log("ok")
+                  playScore(score)
+                }
+                else {
+                  console.log("not ok")
+                  shareError(body)
+                }
+                ok = true
+            }
+	}
+	if (!ok) {
+	    console.log("msg: " + e.data)
+	}
+    };
+    return(ws);
+  }
+  
+  this.send = function (message, callback) {
+    this.waitForConnection(function () {
+      ws.send(message);
+      if (typeof callback !== 'undefined') {
+        callback();
+      }
+    }, 500);
+  };
+
+  this.waitForConnection = function (callback, interval) {
+    if (typeof ws  === 'undefined') {
+      ws = openWs()
+      // ws.onmessage = function (e) {console.log("msg: " + e.data)};
+    }
+    if (ws.readyState === 1) {
+      callback();
+    }
+    else {
+      var that = this;
+      setTimeout(function () {
+        that.waitForConnection(callback, interval);
+      }, interval);
+    }
+  };
 
   $(document).ready(function(){
     ta = $('textarea#livecode')[0]
@@ -31,12 +146,17 @@
   
 </script>
 
-<form method="POST" class="post-form" onsubmit="updateHistory()" >{% csrf_token %}
+
+<td><form method="POST" class="post-form" onsubmit="updateHistory()" >{% csrf_token %}
   {{ form.media}}
   {{ form.as_p }}
   <textarea id="livecode">{{ parent.code }}</textarea>
-  <button type="submit" class="save btn btn-default">Add</button>
+  <button type="button" class="preview btn btn-default" onclick="webPreview()">Preview</button>
+  <button type="submit" class="save btn btn-default">Save</button>
 </form>
+
+
+<pre id="errorarea" style="display: none"></div>
 
 </body>
 </html>

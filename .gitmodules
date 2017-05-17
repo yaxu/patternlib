@@ -1,3 +1,6 @@
 [submodule "pattern/static/livewriting"]
 	path = pattern/static/livewriting
 	url = https://github.com/yaxu/livewriting
+[submodule "pattern/static/webdirt"]
+	path = pattern/static/webdirt
+	url = https://github.com/d0kt0r0/WebDirt.git

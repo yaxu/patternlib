@@ -17,11 +17,12 @@
 
 {% block content %}
 <pre class="patternblock">
-<h3><strong>{{ pattern.name }}</strong> by <em><a href="{% url 'pattern_person' ident=pattern.author.ident %}">{{ pattern.author.ident }}</a></em></h3><code class="haskell">{{ pattern.code }}</code><table><tr><td>{% if pattern.status == 'live' %}<audio controls src="{% static pattern.audiourl %}">(sorry, your web browser does not support audio playback.)</audio>{% else %}rendering.
-{% endif %}</td>
-{% if pattern.status == "live" %}<td>&nbsp;&nbsp;&nbsp;Click if you love this -&gt;&nbsp; </td>
-    <td>{% if loves %}<form name="unlove" method="POST" action="{% url 'pattern_unlove' pk=pattern.pk %}">{% csrf_token %}<span onclick="unlove.submit()" style="font-size:2em">♥</span></form>{% else %}<form name="love" method="POST" action="{% url 'pattern_love' pk=pattern.pk %}">{% csrf_token %}<span onclick="love.submit()" style="font-size:2em">♡</span></form>{% endif %}</td>{% endif %}</tr></table>{% if pattern.parent %}progression from: <em><a href="{% url 'pattern_detail' pk=pattern.parent.pk %}">{{pattern.parent.name}}</a></em><br />{% endif %}{% if pattern.pattern_set.count %}progressed into: {% for child in pattern.pattern_set.all %}<a href="{% url 'pattern_detail' pk=child.pk %}">{{ child }}</a>{% if not forloop.last %}, {% endif %}{% endfor %}{% endif %}{% if user.is_authenticated %}<a href="{% url 'pattern_progress' parent_pk=pattern.id %}">
-make a new pattern</a> from this one
-{% endif %}
+  <h3><strong>{{ pattern.name }}</strong> by <em><a href="{% url 'pattern_person' ident=pattern.author.ident %}">{{ pattern.author.ident }}</a></em></h3><code class="haskell">{{ pattern.code }}</code><table><tr><td>{% if pattern.status == 'live' %}<audio controls src="{% static pattern.audiourl %}">(sorry, your web browser does not support audio playback.)</audio>{% elif pattern.status == 'rendering' %}Sound is rendering. {% endif %}</td>
+{% if pattern.status == "live" %}
+      <td>{% if loves %}<form name="unlove" method="POST" action="{% url 'pattern_unlove' pk=pattern.pk %}">{% csrf_token %}&nbsp;&gt; <span onclick="unlove.submit()" style="font-size:2em">♥</span> &lt;</form>{% else %}<form name="love" method="POST" action="{% url 'pattern_love' pk=pattern.pk %}">{% csrf_token %}&nbsp;&gt; <span onclick="love.submit()" style="font-size:2em">♡</span> &lt;</form>{% endif %}</td>{% endif %}</tr></table>{% if pattern.parent %}progression from: <em><a href="{% url 'pattern_detail' pk=pattern.parent.pk %}">{{pattern.parent.name}}</a></em><br />{% endif %}{% if pattern.pattern_set.count %}progressed into: {% for child in pattern.pattern_set.all %}<a href="{% url 'pattern_detail' pk=child.pk %}">{{ child }}</a>{% if not forloop.last %}, {% endif %}{% endfor %}
+
+{% if user.is_authenticated %}<a href="{% url 'pattern_progress' parent_pk=pattern.id %}">make a new pattern</a> from this one{% else %}<em>log in to make a new pattern from this</em>{% endif %}
+{% endif %}{% if pattern.status == 'error' %}There was a problem with the pattern:<pre>{{ pattern.errorMessage }}</pre>Please <a href="{% url 'pattern_edit' pk=pattern.pk %}">try to fix it</a>.
+  {% endif %}
 </pre>
 {% endblock %}
