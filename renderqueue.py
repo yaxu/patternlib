@@ -46,6 +46,8 @@ def render(fnid, code):
 
     if p.returncode == 0:
         os.rename(abstmppath,abspath)
+        os.rename(abstmppath + ".svg",abspath + ".svg")
+        print("move " + abstmppath + ".svg" + " to " + abspath + ".svg")
 
     return(p.returncode == 0)
 
@@ -53,6 +55,7 @@ def process():
     filepaths = glob(os.path.join(settings.PATTERN_QUEUEDIR, '*.tidal'))
     for filepath in filepaths:
         filename = os.path.basename(filepath)
+        print (filename)
         name = re.match(r'(.*?)\.', filename).group(1)
         f = open(filepath, "r")
         code = f.read()

@@ -30,7 +30,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['slab.org']
+ALLOWED_HOSTS = ['slab.org','localhost']
 
 
 # Application definition
@@ -169,7 +169,7 @@ Q_CLUSTER = {
 }
 
 
-RUNPATTERN_BIN = os.path.join(BASE_DIR, 'bin/runpattern-tidalbot')
+RUNPATTERN_BIN = os.path.join(BASE_DIR, 'bin/runpattern')
 RUNPATTERN_DIR = "/tmp/"
 
 PATTERN_QUEUEDIR = os.path.join(BASE_DIR, 'patternqueue')

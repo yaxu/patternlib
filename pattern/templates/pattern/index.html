@@ -1,10 +1,11 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block content %}
 <h2>Latest patterns</h2>
 
-<ul>
+<ul class="patternlist">
 {% for pattern in patterns %}
-<li><a href="{% url 'pattern_detail' pk=pattern.pk %}">{{ pattern.name }}</a> {{ pattern.author.ident }}</li>
+<li>{% include "pattern/listitem.html" %}</li>
 {% endfor %}
 </ul>
 {% if user.is_authenticated %}
