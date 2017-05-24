@@ -8,7 +8,7 @@ from .forms import PatternForm
 import json
 
 def pattern_index(request):
-    patterns = Pattern.objects.filter(status__in=['live','rendering']).order_by('-id')[:16]
+    patterns = Pattern.objects.filter(status__in=['live']).order_by('-id')[:16]
     context = {'patterns': patterns}
     return render(request, 'pattern/index.html', context)
 
@@ -54,6 +54,9 @@ def pattern_edit(request, parent_pk=None, pk=None):
             ),
             pattern.author = ident[0][0]
             pattern.parent = parent
+
+            # needs to save (and get an id) before rendering
+            pattern.save()
             
             if pattern.typecheck():
                 pattern.render()
