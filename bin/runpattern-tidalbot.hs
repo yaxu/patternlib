@@ -6,6 +6,7 @@ import Control.Concurrent
 import System.Cmd
 import Text.HTML.TagSoup.Entity (lookupEntity)
 import System.Posix.Resource
+import Sound.Tidal.Vis2
 
 unescapeEntities :: String -> String
 unescapeEntities [] = []
@@ -28,7 +29,8 @@ main = do a <- getArgs
           r <- runTidal $ unescapeEntities code
           respond fn r
    where respond fn (OK p)
-           = do d <- dirtStream
+           = do vis fn $ dirtToColour (fast 12 p)
+                d <- dirtStream
                 system $ "ecasound -t:" ++ show (seconds+2) ++ " -i jack,dirt -o " ++ fn ++ " &"
                 d p
                 threadDelay (seconds * 1000000)
