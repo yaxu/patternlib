@@ -1,10 +1,12 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block content %}
 <h2>Latest patterns</h2>
 
-<ul>
+<ul class="patternlist">
 {% for pattern in patterns %}
-<li><a href="{% url 'pattern_detail' pk=pattern.pk %}">{{ pattern.name }}</a> {{ pattern.author.ident }}</li>
+<li><a href="{% url 'pattern_detail' pk=pattern.pk %}"><strong>{{ pattern.name }}</strong></a> {{ pattern.author.ident }}<br />
+  <a href="{% url 'pattern_detail' pk=pattern.pk %}"><img src="{% static pattern.audiourl %}.svg" /></li></a>
 {% endfor %}
 </ul>
 {% if user.is_authenticated %}

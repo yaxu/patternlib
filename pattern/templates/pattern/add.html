@@ -31,6 +31,7 @@
     hideError()
     console.log("webPreview")
     this.send("/renderJSON " + editor.getValue())
+    this.send("/renderSVG " + editor.getValue())
     return(false)
   }
 
@@ -66,6 +67,10 @@
     }, 500);  
   }
 
+  var displaySVG = function(svg) {
+    $("div#svgdisplay")[0].innerHTML = svg;
+  }
+  
   var shareError = function(body) {
     console.log("error " + body)
     errorarea = $('pre#errorarea')
@@ -96,6 +101,21 @@
                   var score = JSON.parse(body)
                   console.log("ok")
                   playScore(score)
+                }
+                else {
+                  console.log("not ok")
+                  shareError(body)
+                }
+                ok = true
+            }
+            else if (status == 'renderSVG') {
+                var re2 = /(ok|nok) ((.|\n)*)/
+                var m2 = data.match(re2)
+                var ok = m2[1]
+                var body = m2[2]
+                if (ok === "ok") {
+                  console.log("svg ok")
+                  displaySVG(body);
                 }
                 else {
                   console.log("not ok")
@@ -155,8 +175,9 @@
   <button type="submit" class="save btn btn-default">Save</button>
 </form>
 
-
+<div id="svgdisplay"></div>
 <pre id="errorarea" style="display: none"></div>
+
 
 </body>
 </html>

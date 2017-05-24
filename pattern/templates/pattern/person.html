@@ -8,10 +8,10 @@
 {% endblock %}
 
 {% block content %}
-Aha
+{{ identity }}
 <ul>
 {% for pattern in patterns %}
-<li><a href="{% url 'pattern_detail' pk=pattern.pk %}">{{ pattern.name }}</a> {{ pattern.author.ident }}</li>
+<li><a href="{% url 'pattern_detail' pk=pattern.pk %}">{{ pattern.name }}</a></li>
 {% endfor %}
 </ul>
 
