@@ -11,7 +11,7 @@
 {{ identity }}
 <ul>
 {% for pattern in patterns %}
-<li><a href="{% url 'pattern_detail' pk=pattern.pk %}">{{ pattern.name }}</a></li>
+<li>{% include "pattern/listitem.html" %}</li>
 {% endfor %}
 </ul>
 
