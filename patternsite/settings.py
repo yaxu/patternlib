@@ -169,7 +169,7 @@ Q_CLUSTER = {
 }
 
 
-RUNPATTERN_BIN = os.path.join(BASE_DIR, 'bin/runpattern-tidalbot')
+RUNPATTERN_BIN = os.path.join(BASE_DIR, 'bin/runpattern')
 RUNPATTERN_DIR = "/tmp/"
 
 PATTERN_QUEUEDIR = os.path.join(BASE_DIR, 'patternqueue')
