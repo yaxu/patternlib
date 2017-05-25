@@ -30,7 +30,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['slab.org','localhost']
+ALLOWED_HOSTS = ['slab.org','localhost','lib.lurk.org','patternlib.lurk.org', 'lib.tidalcycles.org']
 
 
 # Application definition
@@ -91,13 +91,13 @@ WSGI_APPLICATION = 'patternsite.wsgi.application'
 
 DATABASES = {
     'default': {
-        #'ENGINE': 'django.db.backends.mysql',
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': 'patternlib.sqlite',
-        #'USER': 'patternlib',
-        #'PASSWORD': DBPASS,
-        #'HOST': 'localhost',
-        'PORT': '',
+        'ENGINE': 'django.db.backends.mysql',
+        #'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': 'patternlib',
+        'USER': 'patternlib',
+        'PASSWORD': DBPASS,
+        'HOST': 'localhost',
+        #'PORT': '',
     }
 }
 
@@ -177,7 +177,7 @@ PATTERN_QUEUEDIR_ERROR = os.path.join(BASE_DIR, 'patternqueue.error')
 PATTERN_QUEUEDIR_TMP = os.path.join(BASE_DIR, 'patternqueue/tmp')
 PATTERN_GENPATH = lambda fnid: re.sub(r"(..)", r'\1/', fnid)
 PATTERN_AUDIOURL = "audio/"
-PATTERN_AUDIODIR = os.path.join(BASE_DIR, "pattern/static/")
+PATTERN_AUDIODIR = os.path.join(BASE_DIR, "static/")
 
 try:
     from local_settings import *

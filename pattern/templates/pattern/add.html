@@ -83,7 +83,7 @@
   }
   
   var openWs = function() {
-    var ws = new WebSocket('ws://localhost:9162', []);
+    var ws = new WebSocket('ws://' + location.host + ':9162/websocket/', []);
     ws.onmessage = function (e) {
         var re = /\/(\w+) ((.|[\r\n])*)/
 	var m = e.data.match(re);
