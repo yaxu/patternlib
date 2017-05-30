@@ -9,6 +9,9 @@ import json
 
 def pattern_index(request):
     rendering = Pattern.objects.filter(status__in=['rendering'])
+    for pattern in rendering:
+        pattern.is_live()
+        
     latest = Pattern.objects.filter(status__in=['live']).order_by('-id')[:32]
     context = {'latest': latest}
     return render(request, 'pattern/index.html', context)
