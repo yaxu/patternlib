@@ -1,6 +1,10 @@
 {% extends 'base.html' %}
 {% load static %}
 
+{% block nav-about %}
+<a class="active" href="#">about</a></li>
+{% endblock %}
+
 {% block head %}
 
 <link rel="stylesheet" href="{% static 'codemirror-5.22.0/lib/codemirror.css' %}">
@@ -12,7 +16,7 @@
 {% endblock %}
 
 {% block content %}
-<h2>Add pattern</h2>
+<h2>{% if mode == "add"%}Add{% else %}Edit{% endif %} pattern</h2>
 
 <script>
   var editor
@@ -64,6 +68,7 @@
   var playScore = function(score) {
     waitForWebdirt(function () {
       wd.playScore(score)
+    
     }, 500);  
   }
 
@@ -83,7 +88,7 @@
   }
   
   var openWs = function() {
-    var ws = new WebSocket('ws://' + location.host + ':9162/websocket/', []);
+    var ws = new WebSocket('ws://' + location.hostname + ':9162/websocket/', []);
     ws.onmessage = function (e) {
         var re = /\/(\w+) ((.|[\r\n])*)/
 	var m = e.data.match(re);
@@ -170,15 +175,35 @@
 <td><form method="POST" class="post-form" onsubmit="updateHistory()" >{% csrf_token %}
   {{ form.media}}
   {{ form.as_p }}
-  <textarea id="livecode">{{ parent.code }}</textarea>
+  <textarea id="livecode">{{ code }}</textarea>
   <button type="button" class="preview btn btn-default" onclick="webPreview()">Preview</button>
   <button type="submit" class="save btn btn-default">Save</button>
 </form>
 
 <div id="svgdisplay"></div>
-<pre id="errorarea" style="display: none"></div>
+<pre id="errorarea" style="display: none">
 
 
-</body>
-</html>
+{% endblock %}
+
+{% block sidebar %}
+<h3>Hints</h3>
+
+<ul>
+  <li>See the <a href="{% url 'pattern_help' %}">help page</a> for
+    info about what this website, and TidalCycles is about.</li>
+  <li>Give your pattern a nice name</li>
+  <li>Type or paste your TidalCycles code into the editor. Just put
+    the pattern in, e.g. leave off <code>d1 $</code> from the start of the
+    pattern if you're used to doing that..</li>
+  <li>Press 'preview' to get a preview of what your pattern sounds
+    (and looks) like. The sound will be generated inside your web
+    browser, and so might be a little bit different to how it will
+    finally be rendered, e.g. with extra (or quite possibly fewer)
+    glitches.</li>
+  <li>The visual pattern as well as the sound is generated from the
+    code. If you squint your eyes and ears everything will become
+    clear.</li>
+</ul>
+
 {% endblock %}

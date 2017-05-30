@@ -28,6 +28,13 @@
       </div>
       <h1><a href="/">patternlib</a></h1>
     </div>
+    <div id="navbox">
+      <ul>
+	<li>{% block nav-home %}<a href="{% url 'index' %}">home</a>{% endblock %}</li>
+	{% if user.is_authenticated %}<li>{% block nav-add %}<a href="{% url 'pattern_add' %}">add</a>{% endblock %}</li>{% endif %}
+	<li>{% block nav-help %}<a href="{% url 'pattern_help' %}">help</a>{% endblock %}</li>
+	<li>{% block nav-about %}<a href="{% url 'pattern_about' %}">about</a>{% endblock %}</li>
+    </div>
     <div id="mainbox" class="container-fluid">
       <div class="row">
 	<div class="col-sm-8 no-gutter">
@@ -38,7 +45,17 @@
 	</div>
 	<div class="col-sm-4 no-gutter">
 	  <div class="box side">
-<!-- <a class="twitter-timeline" href="https://twitter.com/tidalbot">Tweets by tidalbot</a> <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>	    two of two columns -->
+	    {% block sidebar %}
+	    {% if latest %}
+	    <h3>Latest patterns</h3>
+	    
+	    <ul class="patternlist">
+	      {% for pattern in latest %}
+	      <li>{% include "pattern/listitem.html" %}</li>
+	      {% endfor %}
+	    </ul>
+	    {% endif %}
+	    {% endblock %}
 	  </div>
 	</div>
       </div>

@@ -1,3 +1,3 @@
 {% load static %}
 <a href="{% url 'pattern_detail' pk=pattern.pk %}"><strong>{{ pattern.name }}</strong></a> by <a href="{% url 'pattern_person' ident=pattern.author.ident %}">{{ pattern.author.ident }}</a><br />
-<a href="{% url 'pattern_detail' pk=pattern.pk %}"><img src="{% static pattern.audiourl %}.svg" /></a>
+<a href="{% url 'pattern_detail' pk=pattern.pk %}"><img src="{% static pattern.audiourl %}.svg" class="vis" /></a>

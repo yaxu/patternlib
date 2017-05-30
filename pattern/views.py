@@ -8,9 +8,20 @@ from .forms import PatternForm
 import json
 
 def pattern_index(request):
-    patterns = Pattern.objects.filter(status__in=['live']).order_by('-id')[:16]
-    context = {'patterns': patterns}
+    rendering = Pattern.objects.filter(status__in=['rendering'])
+    latest = Pattern.objects.filter(status__in=['live']).order_by('-id')[:32]
+    context = {'latest': latest}
     return render(request, 'pattern/index.html', context)
+
+def pattern_about(request):
+    latest = Pattern.objects.filter(status__in=['live']).order_by('-id')[:16]
+    context = {'latest': latest}
+    return render(request, 'pattern/about.html', context)
+
+def pattern_help(request):
+    latest = Pattern.objects.filter(status__in=['live']).order_by('-id')[:16]
+    context = {'latest': latest}
+    return render(request, 'pattern/help.html', context)
 
 @login_required
 def pattern_love(request, pk):
@@ -49,14 +60,13 @@ def pattern_edit(request, parent_pk=None, pk=None):
         parent = None
  
     if request.method == "POST":
-        form = PatternForm(request.POST)
-        if form.is_valid():
-            pattern = form.save(commit=False)
+        if pk:
+            pattern = get_object_or_404(Pattern, pk=pk)
+            if pattern.author.user != request.user:
+                return HttpResponseForbidden()
+            pattern.editNumber = pattern.editNumber + 1
+        else:
             username = request.user.username
-            language = Language.objects.get_or_create(
-                name = "TidalCycles"
-            )
-            pattern.language = language[0]
             ident, created = Identity.objects.get_or_create(
                 user = request.user,
                 service = None,
@@ -64,31 +74,51 @@ def pattern_edit(request, parent_pk=None, pk=None):
                           'ident': username
                 },
             )
-            pattern.author = ident
-            pattern.parent = parent
-
-            # needs to save (and get an id) before rendering
-            pattern.save()
+            language = Language.objects.get_or_create(
+                name = "TidalCycles"
+            )
+            pattern = Pattern(author = ident,
+                              parent = parent,
+                              language = language[0]
+            )
+        
+        form = PatternForm(request.POST or None, instance=pattern)
+        if form.is_valid():
+            form.save(commit=False)
             
-            if pattern.typecheck():
+            if pattern.getJSON():
+                # needs to save (and get an id) before rendering
+                pattern.save()
                 pattern.render()
-
-            pattern.save()
-                
-            return redirect('pattern_detail', pk=pattern.pk)
+                pattern.save()
+                return redirect('pattern_detail', pk=pattern.pk)
     else:
         if pk:
             pattern = get_object_or_404(Pattern, pk=pk)
             form = PatternForm(instance=pattern)
+            code = pattern.code
+            mode = "edit"
         else:
-            form = PatternForm()            
-    context = {'form': form, 'parent': parent}
+            form = PatternForm()
+            mode = "add"
+            if parent:
+                code = parent.code
+            else:
+                code = ""
+
+    context = {'form': form, 'parent': parent, 'code': code, 'mode': mode}
     return render(request, 'pattern/add.html', context)
 
 def pattern_detail(request, pk):
     pattern = get_object_or_404(Pattern, pk=pk)
     pattern.is_live() # fixes status if necessary
     loves = False
+    latest = Pattern.objects.filter(status__in=['live']).order_by('-id')[:16]
+    context = {'latest': latest,
+               'pattern': pattern,
+               'loves': loves
+              }
+
     if request.user.is_authenticated:
         i, created = Identity.objects.get_or_create(
               user = request.user,
@@ -100,7 +130,7 @@ def pattern_detail(request, pk):
         if i.pattern_loves.filter(id=pattern.id).exists():
             loves = True
     
-    return render(request, 'pattern/detail.html', {'pattern': pattern, 'loves': loves})
+    return render(request, 'pattern/detail.html', context)
 
 def pattern_person(request, ident):
     i = get_object_or_404(Identity, ident=ident)

@@ -1,14 +1,20 @@
 {% extends 'base.html' %}
 {% load static %}
-{% block content %}
-<h2>Latest patterns</h2>
 
-<ul class="patternlist">
-{% for pattern in patterns %}
-<li>{% include "pattern/listitem.html" %}</li>
-{% endfor %}
-</ul>
-{% if user.is_authenticated %}
-<div><a href="{% url 'pattern_add' %}">add <span class="glyphicon glyphicon-plus"></span></a></div>
-{% endif %}
+{% block nav-home %}
+<a class="active" href="#">home</a></li>
 {% endblock %}
+
+{% block content %}
+	    {% if latest %}
+	    <h2>Latest patterns</h2>
+	    
+	    <ul class="patternlist">
+	      {% for pattern in latest %}
+	      <li>{% include "pattern/listitem.html" %}</li>
+	      {% endfor %}
+	    </ul>
+	    {% endif %}
+{% endblock %}
+
+	    {% block sidebar %}Welcome!{% endblock %}

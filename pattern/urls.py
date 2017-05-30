@@ -11,5 +11,7 @@ urlpatterns = [
     url(r'^(?P<parent_pk>\d+)/progress$', views.pattern_edit, name='pattern_progress'),
     url(r'^(?P<pk>\d+)/love/$', views.pattern_love, name='pattern_love'),
     url(r'^(?P<pk>\d+)/unlove/$', views.pattern_unlove, name='pattern_unlove'),
-    url(r'^logout/$', views.logout)
+    url(r'^logout/$', views.logout),
+    url(r'^about/$', views.pattern_about, name='pattern_about'),
+    url(r'^help/$', views.pattern_help, name='pattern_help'),
 ]

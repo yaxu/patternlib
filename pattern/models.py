@@ -31,9 +31,11 @@ class Pattern(models.Model):
     language = models.ForeignKey('Language')
     parent = models.ForeignKey('self', null=True)
     code = models.TextField()
+    json = models.TextField(null=True)
     history = models.TextField(null=True)
     audiourl = models.URLField(blank=True, null=True)
     errorMessage = models.TextField(blank=True, null=True)
+    editNumber = models.IntegerField(default=0)
     status = models.CharField(
         max_length=10,
         choices = (
@@ -69,6 +71,20 @@ class Pattern(models.Model):
                 self.errorMessage = result[2]
                 return(False)
 
+    def getJSON(self):
+        result = ws.sendrecv("/renderJSON " + self.code)
+        print(result[1])
+        if (result[1] == 'ok'):
+            self.json = result[2]
+            return(True)
+        else:
+            if (result[1] == 'nok'):
+                self.status = 'error'
+                print("static: "  + result[1])
+                print("error: "  + result[2])
+                self.errorMessage = result[2]
+                return(False)
+            
     def render(self):
         filename = str(self.id)
         filepath_tmp = os.path.join(settings.PATTERN_QUEUEDIR, filename + ".tmp")

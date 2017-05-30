@@ -38,15 +38,67 @@ code {
     min-height: 3em;
 }
 
+#navbox {
+    border: 1px solid white;
+    padding-top: 1em;
+    min-height: 3em;
+}
+
 .box {
     padding: 0em 1em;
 }
 
 .side {
     background: #eee;
+    padding: 0.5em 1em;
 }
 
 .no-gutter {
    padding: 0 !important;
    margin: 0 !important;
+}
+
+#navbox ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #ddd;
+}
+
+#navbox li {
+    float: left;
+}
+
+#navbox li a {
+    display: block;
+    color: #000;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+/* Change the link color to #111 (black) on hover */
+#navbox li a:hover {
+    background-color: #bbb;
+}
+
+#navbox .active {
+    background-color: #999;
+    color: #fff
+}
+
+ul.patternlist {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+ul.patternlist li {
+    padding: 0 0 1em 0;
+}
+
+img.vis {
+    width: 100%;
+    height: auto;
 }
