@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block nav-help %}
+<a class="active" href="#">help</a></li>
+{% endblock %}
+
+{% block content %}
+<h2>Help!</h2>
+
+<p>Welcome to patternlib! This is a website for exploring pattern made
+in the <a href="http://tidalcycles.org">TidalCycles</a> language,
+known as Tidal for short.
+</p>
+
+<p>Tidal is designed for making music from patterns, described with
+code. You also see a lot of colour patterns - each one is a visual
+representation of a pattern, to give an impression of the pattern's
+structure.
+</p>
+
+<p>If you click on a pattern on the <a href="{% url 'index' %}">front
+page</a>, you should be able to read the code that someone typed into
+patternlib, hear the sound generated from it, and an see the visual
+generated from the same code.
+</p>
+
+<p>You can browse other people's patterns, or log in (currently via
+either Twitter or GitHub) to add your own patterns. If you want to add
+your own, you'll need to know some TidalCycles code, you can find an
+introduction and reference on
+the <a href="http://tidalcycles.org/">Tidalcycles website</a>.</p>
+
+<p>You can <a href="{% url 'pattern_add' %}">create a fresh pattern</a>, or take someone
+else's pattern as a starting point, just click on one and then click
+'make a new pattern from this one.'</p>
+
+{% endblock %}
+
