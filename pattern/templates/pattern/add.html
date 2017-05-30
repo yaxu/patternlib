@@ -67,6 +67,7 @@
 
   var playScore = function(score) {
     waitForWebdirt(function () {
+      wd.stopAll()
       wd.playScore(score)
     
     }, 500);  
