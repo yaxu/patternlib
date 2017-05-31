@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block nav-home %}
+<a class="active" href="#">home</a></li>
+{% endblock %}
+
+{% block content %}
+<pre>
+{% for pattern in all %}
+-- {{ pattern.name }} by {{ pattern.author }}
+{{ pattern.code }}
+
+{% endfor %}
+</pre>
+{% endblock %}
+
+{% block sidebar %}{% endblock %}

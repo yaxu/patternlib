@@ -16,6 +16,11 @@ def pattern_index(request):
     context = {'latest': latest}
     return render(request, 'pattern/index.html', context)
 
+def pattern_all(request):
+    all = Pattern.objects.filter(status__in=['live']).order_by('-id')
+    context = {'all': all}
+    return render(request, 'pattern/all.html', context)
+
 def pattern_about(request):
     latest = Pattern.objects.filter(status__in=['live']).order_by('-id')[:16]
     context = {'latest': latest}

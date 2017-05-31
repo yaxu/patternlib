@@ -4,6 +4,7 @@ from . import views
 
 urlpatterns = [
     url(r'^$', views.pattern_index, name='index'),
+    url(r'^all/$', views.pattern_all, name='all'),
     url(r'^add/$', views.pattern_edit, name='pattern_add'),
     url(r'^person/(?P<ident>\w+)/$', views.pattern_person, name='pattern_person'),
     url(r'^(?P<pk>\d+)/$', views.pattern_detail, name='pattern_detail'),
