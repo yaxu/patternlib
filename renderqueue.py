@@ -2,7 +2,7 @@
 
 import pyinotify
 import os
-from os.path import join, getsize
+from os.path import join, getsize, isfile
 from glob import glob
 import time
 import math
@@ -44,12 +44,12 @@ def render(fnid, code):
                stdout=PIPE, stdin=PIPE, stderr=STDOUT)
     tidal = p.communicate(input=code)[0]
 
-    if p.returncode == 0:
+    if p.returncode == 0 and isfile(abstmppath):
         os.rename(abstmppath,abspath)
         os.rename(abstmppath + ".svg",abspath + ".svg")
         print("move " + abstmppath + ".svg" + " to " + abspath + ".svg")
-
-    return(p.returncode == 0)
+        return(0)
+    return(1)
 
 def process():
     filepaths = glob(os.path.join(settings.PATTERN_QUEUEDIR, '*.tidal'))

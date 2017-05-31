@@ -177,7 +177,7 @@ PATTERN_QUEUEDIR_ERROR = os.path.join(BASE_DIR, 'patternqueue.error')
 PATTERN_QUEUEDIR_TMP = os.path.join(BASE_DIR, 'patternqueue/tmp')
 PATTERN_GENPATH = lambda fnid: re.sub(r"(..)", r'\1/', fnid)
 PATTERN_AUDIOURL = "audio/"
-PATTERN_AUDIODIR = os.path.join(BASE_DIR, "static/")
+PATTERN_AUDIODIR = os.path.join(BASE_DIR, "static-audio/")
 
 try:
     from local_settings import *
